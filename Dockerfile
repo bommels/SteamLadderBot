@@ -9,4 +9,4 @@ RUN pip install -r requirements.txt
 
 ADD . /opt/app
 
-CMD ["python", "bot.py"]
+CMD ["python", "bot/bot.py"]
