@@ -41,7 +41,7 @@ async def rank(ctx, steam_id, update=None):
 @bot.command()
 async def profile(ctx, steam_id, update=None):
     """View a profile summary of a user."""
-    discord_id = steam_id[3:-1] if '@' in steam_id else None
+    discord_id = steam_id.replace('<@', '').replace('>', '').replace('!', '') if '@' in steam_id else None
     steam_id = None if discord_id else steam_id
     update = update and update == 'update'
     force_update = update and ctx.message.author.id in DISCORD_ADMIN_USER_IDS
