@@ -1,4 +1,5 @@
 # Steam Ladder settings
+STEAMLADDER_API_BASE_URL = 'https://steamladder.com/api'
 STEAMLADDER_API_TOKEN = ''
 
 # Discord settings

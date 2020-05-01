@@ -1,3 +1,4 @@
+import humanize
 from discord import Embed, Color
 
 
@@ -129,4 +130,37 @@ class DiscordBotUtils:
             if api_response['steamladder']['ranking']['national']['games']:
                 embed.add_field(name='Games (N)', value=api_response['steamladder']['ranking']['national']['games'], inline=True)
 
+        return embed
+
+    @staticmethod
+    def create_value_embed(embed, api_response):
+        """
+        Embed with data about profile value
+        :param embed: base embed from create_user_base_embed()
+        :param api_response: response from steamladder api
+        :return: Embed
+        """
+
+        values = api_response['steamladder']['value']
+
+        total_value = 0
+        total_value += values['level'] if values['level'] else 0
+        total_value += values['games_current'] if values['games_current'] else 0
+        total_value += values['donator_value'] if values['donator_value'] else 0
+
+        if total_value > 0:
+            embed.add_field(name='Total value', value='**${}**'.format(humanize.intcomma(round(total_value))), inline=False)
+
+            if values['level']:
+                embed.add_field(name='Level value', value='${}'.format(humanize.intcomma(round(values['level']))), inline=True)
+
+            if values['games_current']:
+                embed.add_field(name='Games value', value='${}'.format(humanize.intcomma(round(values['games_current']))), inline=True)
+
+            donator_value = values['donator_value'] if values['donator_value'] else 0
+            embed.add_field(name='Donator value', value='${}'.format(humanize.intcomma(round(donator_value))), inline=True)
+        else:
+            embed.add_field(name='Info', value='No value known, try updating your profile.', inline=False)
+
+        embed.set_footer(text='Game pricing data based on current Steam store prices.')
         return embed

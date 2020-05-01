@@ -18,9 +18,30 @@ async def on_ready():
 
 
 @bot.command()
-async def rank(ctx, steam_id, update=None):
+async def value(ctx, steam_id=None, update=None):
+    """View value stats of a user."""
+    discord_id = steam_id[3:-1] if steam_id and '@' in steam_id else ctx.message.author.id if steam_id is None else None
+    steam_id = None if discord_id else steam_id
+
+    update = update and update == 'update'
+    force_update = update and ctx.message.author.id in DISCORD_ADMIN_USER_IDS
+
+    logger.info('Received !value command with params steam_id {}, discord_id {}, update: {}, force_update: {}'.format(
+        steam_id, discord_id, update, force_update
+    ))
+
+    try:
+        api_response = SteamLadderAPI.get_profile(steam_id=steam_id, discord_id=discord_id, update=update, force_update=force_update)
+        base_embed = DiscordBotUtils.create_user_base_embed(api_response)
+        rank_embed = DiscordBotUtils.create_value_embed(base_embed, api_response)
+        await ctx.send(embed=rank_embed)
+    except APIException as e:
+        await ctx.send(e)
+
+@bot.command()
+async def rank(ctx, steam_id=None, update=None):
     """View ranking stats of a user."""
-    discord_id = steam_id[3:-1] if '@' in steam_id else None
+    discord_id = steam_id[3:-1] if steam_id and '@' in steam_id else ctx.message.author.id if steam_id is None else None
     steam_id = None if discord_id else steam_id
     update = update and update == 'update'
     force_update = update and ctx.message.author.id in DISCORD_ADMIN_USER_IDS
@@ -39,9 +60,9 @@ async def rank(ctx, steam_id, update=None):
 
 
 @bot.command()
-async def profile(ctx, steam_id, update=None):
+async def profile(ctx, steam_id=None, update=None):
     """View a profile summary of a user."""
-    discord_id = steam_id.replace('<@', '').replace('>', '').replace('!', '') if '@' in steam_id else None
+    discord_id = steam_id[3:-1] if steam_id and '@' in steam_id else ctx.message.author.id if steam_id is None else None
     steam_id = None if discord_id else steam_id
     update = update and update == 'update'
     force_update = update and ctx.message.author.id in DISCORD_ADMIN_USER_IDS

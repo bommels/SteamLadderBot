@@ -1,7 +1,7 @@
 import logging
 import requests
 
-from config import STEAMLADDER_API_TOKEN
+from config import STEAMLADDER_API_TOKEN, STEAMLADDER_API_BASE_URL
 
 logger = logging.getLogger(__name__)
 
@@ -12,7 +12,7 @@ class APIException(Exception):
 
 class SteamLadderAPI:
     REQUEST_TIMEOUT_S = 30
-    BASE_URL = 'https://steamladder.com/api'
+    BASE_URL = STEAMLADDER_API_BASE_URL
     BASE_HEADERS = {
         'Authorization': 'Token {}'.format(STEAMLADDER_API_TOKEN)
     }
