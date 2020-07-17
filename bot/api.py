@@ -11,7 +11,7 @@ class APIException(Exception):
 
 
 class SteamLadderAPI:
-    REQUEST_TIMEOUT_S = 30
+    REQUEST_TIMEOUT_S = 60
     BASE_URL = STEAMLADDER_API_BASE_URL
     BASE_HEADERS = {
         'Authorization': 'Token {}'.format(STEAMLADDER_API_TOKEN)
@@ -20,7 +20,7 @@ class SteamLadderAPI:
     @staticmethod
     def get_profile(steam_id, discord_id, update, force_update=False):
         q = discord_id if discord_id else steam_id
-        method = 'discord' if discord_id else 'profile'
+        method = 'discord' if discord_id else 'profile' if steam_id.isnumeric() and len(steam_id) == 17 else 'steam'
 
         if update:
             return SteamLadderAPI._post(version='v2', method='{}/{}'.format(method, q), params={'force': force_update})
@@ -54,7 +54,7 @@ class SteamLadderAPI:
                     url='{}/{}/{}/'.format(SteamLadderAPI.BASE_URL, version, method),
                     headers=SteamLadderAPI.BASE_HEADERS,
                     params=params,
-                    timeout=30
+                    timeout=SteamLadderAPI.REQUEST_TIMEOUT_S
                 )
             )
         except requests.Timeout:
@@ -72,7 +72,7 @@ class SteamLadderAPI:
                     url='{}/{}/{}/'.format(SteamLadderAPI.BASE_URL, version, method),
                     headers=SteamLadderAPI.BASE_HEADERS,
                     params=params,
-                    timeout=30
+                    timeout=SteamLadderAPI.REQUEST_TIMEOUT_S
                 )
             )
         except requests.Timeout:

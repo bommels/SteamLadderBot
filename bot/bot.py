@@ -26,6 +26,9 @@ async def value(ctx, steam_id=None, update=None):
     update = update and update == 'update'
     force_update = update and ctx.message.author.id in DISCORD_ADMIN_USER_IDS
 
+    if update:
+        message = await ctx.send('Updating profile..')
+
     logger.info('Received !value command with params steam_id {}, discord_id {}, update: {}, force_update: {}'.format(
         steam_id, discord_id, update, force_update
     ))
@@ -38,6 +41,9 @@ async def value(ctx, steam_id=None, update=None):
     except APIException as e:
         await ctx.send(e)
 
+    if update:
+        await message.delete()
+
 @bot.command()
 async def rank(ctx, steam_id=None, update=None):
     """View ranking stats of a user."""
@@ -45,6 +51,9 @@ async def rank(ctx, steam_id=None, update=None):
     steam_id = None if discord_id else steam_id
     update = update and update == 'update'
     force_update = update and ctx.message.author.id in DISCORD_ADMIN_USER_IDS
+
+    if update:
+        message = await ctx.send('Updating profile..')
 
     logger.info('Received !rank command with params steam_id {}, discord_id {}, update: {}, force_update: {}'.format(
         steam_id, discord_id, update, force_update
@@ -58,6 +67,9 @@ async def rank(ctx, steam_id=None, update=None):
     except APIException as e:
         await ctx.send(e)
 
+    if update:
+        await message.delete()
+
 
 @bot.command()
 async def profile(ctx, steam_id=None, update=None):
@@ -66,6 +78,9 @@ async def profile(ctx, steam_id=None, update=None):
     steam_id = None if discord_id else steam_id
     update = update and update == 'update'
     force_update = update and ctx.message.author.id in DISCORD_ADMIN_USER_IDS
+
+    if update:
+        message = await ctx.send('Updating profile..')
 
     logger.info('Received !profile command with params steam_id {}, discord_id {}, update: {}, force_update: {}'.format(
         steam_id, discord_id, update, force_update
@@ -78,6 +93,9 @@ async def profile(ctx, steam_id=None, update=None):
         await ctx.send(embed=profile_embed)
     except APIException as e:
         await ctx.send(e)
+
+    if update:
+        await message.delete()
 
 
 if __name__ == '__main__':
