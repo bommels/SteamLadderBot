@@ -19,7 +19,7 @@ async def on_ready():
 
 @bot.command()
 async def value(ctx, steam_id=None, update=None):
-    """View value stats of a user."""
+    """View value stats of a user"""
     discord_id = steam_id[3:-1] if steam_id and '@' in steam_id else ctx.message.author.id if steam_id is None else None
     steam_id = None if discord_id else steam_id
 
@@ -47,7 +47,7 @@ async def value(ctx, steam_id=None, update=None):
 
 @bot.command()
 async def rank(ctx, steam_id=None, update=None):
-    """View ranking stats of a user."""
+    """View ranking stats of a user"""
     discord_id = steam_id[3:-1] if steam_id and '@' in steam_id else ctx.message.author.id if steam_id is None else None
     steam_id = None if discord_id else steam_id
     update = update and update == 'update'
@@ -74,7 +74,7 @@ async def rank(ctx, steam_id=None, update=None):
 
 @bot.command()
 async def profile(ctx, steam_id=None, update=None):
-    """View a profile summary of a user."""
+    """View a profile summary of a user"""
     discord_id = steam_id[3:-1] if steam_id and '@' in steam_id else ctx.message.author.id if steam_id is None else None
     steam_id = None if discord_id else steam_id
     update = update and update == 'update'
@@ -107,9 +107,10 @@ async def admin(ctx, command):
         return
 
     if command == 'guilds':
-        servers = ['{} - Members: {} - ID: {}'.format(server.name, server.member_count, server.id) for server in list(bot.guilds)]
+        servers = sorted(bot.guilds, key=lambda g: g.member_count, reverse=True)
+        servers = ['{} | Members: {}'.format(server.name, server.member_count) for server in servers]
         servers_str = "\n".join(servers)
-        await ctx.send('I am in {} server(s)!\n{}'.format(len(servers), servers_str))
+        await ctx.send('I am in {} server(s)\n```{}```'.format(len(servers), servers_str))
 
 
 if __name__ == '__main__':
