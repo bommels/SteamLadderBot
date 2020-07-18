@@ -113,6 +113,20 @@ async def admin(ctx, command):
         await ctx.send('I am in {} server(s)\n```{}```'.format(len(servers), servers_str))
 
 
+@bot.command()
+async def invite(ctx):
+    """Add this bot to your server"""
+    logger.info('Received !invite')
+    await ctx.send('Add me to your server: <https://steamladder.com/bot/>')
+
+
+@bot.command()
+async def github(ctx):
+    """Get Github repository"""
+    logger.info('Received !github')
+    await ctx.send('View code on Github: <https://github.com/bommels/SteamLadderBot>')
+
+
 if __name__ == '__main__':
     logging.basicConfig(format='%(asctime)s [%(levelname)s] %(name)s: %(message)s', level=logging.INFO)
     bot.run(DISCORD_BOT_TOKEN)
