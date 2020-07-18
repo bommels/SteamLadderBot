@@ -44,6 +44,7 @@ async def value(ctx, steam_id=None, update=None):
     if update:
         await message.delete()
 
+
 @bot.command()
 async def rank(ctx, steam_id=None, update=None):
     """View ranking stats of a user."""
@@ -96,6 +97,19 @@ async def profile(ctx, steam_id=None, update=None):
 
     if update:
         await message.delete()
+
+
+@bot.command()
+async def admin(ctx, command):
+    """Administrator commands"""
+    logger.info('Received !guilds with command {}'.format(command))
+    if ctx.message.author.id not in DISCORD_ADMIN_USER_IDS:
+        return
+
+    if command == 'guilds':
+        servers = ['{} - Members: {} - ID: {}'.format(server.name, server.member_count, server.id) for server in list(bot.guilds)]
+        servers_str = "\n".join(servers)
+        await ctx.send('I am in {} server(s)!\n{}'.format(len(servers), servers_str))
 
 
 if __name__ == '__main__':
