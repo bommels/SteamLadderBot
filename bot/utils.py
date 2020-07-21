@@ -164,3 +164,47 @@ class DiscordBotUtils:
 
         embed.set_footer(text='Game pricing data based on current Steam store prices.')
         return embed
+
+    @staticmethod
+    def create_profile_status(embed, api_response):
+        """
+        Embed with user profile status
+        :param embed: base embed from create_user_base_embed()
+        :param api_response: response from steamladder api
+        :return: Embed
+        """
+
+        if not api_response['steam']['is_private_profile']:
+            embed.add_field(name='Profile status', value=':green_circle: Public', inline=False)
+
+        if api_response['steam']['extra']['games']:
+            embed.add_field(name='Games', value=':green_circle: Public', inline=True)
+        else:
+            embed.add_field(name='Games', value=':lock: Private', inline=True)
+
+        if api_response['steam']['extra']['playtime_min']:
+            embed.add_field(name='Playtime', value=':green_circle: Public', inline=True)
+        else:
+            embed.add_field(name='Playtime', value=':lock: Private', inline=True)
+
+        if api_response['steam']['extra']['is_community_banned']:
+            embed.add_field(name='Community', value=':red_circle: Banned', inline=True)
+        else:
+            embed.add_field(name='Community', value=':green_circle: Not banned', inline=True)
+
+        if api_response['steam']['extra']['economy_status'] == 'none':
+            embed.add_field(name='Trading', value=':green_circle: Can trade', inline=True)
+        else:
+            embed.add_field(name='Trading', value=':red_circle: {}'.format(api_response['steam']['extra']['economy_status']), inline=True)
+
+        if api_response['steam']['extra']['is_vac_banned']:
+            embed.add_field(name='VAC', value=':red_circle: Banned', inline=True)
+        else:
+            embed.add_field(name='VAC', value=':green_circle: Not banned', inline=True)
+
+        if api_response['steam']['extra']['game_bans'] > 0:
+            embed.add_field(name='Game bans', value=':red_circle: {} bans'.format(api_response['steam']['extra']['game_bans']), inline=True)
+        else:
+            embed.add_field(name='Game bans', value=':green_circle: Not banned', inline=True)
+
+        return embed
