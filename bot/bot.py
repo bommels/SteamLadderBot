@@ -96,7 +96,7 @@ class SteamLadderCommands(commands.Cog):
 
     @commands.command()
     async def status(self, ctx, steam_id=None, update=None):
-        """View a Steam profile status"""
+        """View profile status of a user"""
         discord_id = steam_id[3:-1] if steam_id and '@' in steam_id else ctx.message.author.id if steam_id is None else None
         steam_id = None if discord_id else steam_id
         update = update and update == 'update'
