@@ -4,6 +4,23 @@ from discord import Embed, Color
 
 class DiscordBotUtils:
     @staticmethod
+    def parse_query(message, q):
+        discord_id, steam_id, steam_custom_id = None, None, None
+        if q:
+            if len(q) == 17 and q.isnumeric():
+                steam_id = True
+            elif '@' in q:
+                discord_id = True
+                q = q[3:-1]
+            else:
+                steam_custom_id = True
+        else:
+            discord_id = True
+            q = message.author.id
+
+        return discord_id, steam_id, steam_custom_id, q
+
+    @staticmethod
     def create_user_base_embed(api_response):
         """
         Creates a base embed used as base for profile and ranking commands

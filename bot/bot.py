@@ -18,21 +18,18 @@ class SteamLadderCommands(commands.Cog):
     @commands.command()
     async def value(self, ctx, steam_id=None, update=None):
         """View value stats of a user"""
-        discord_id = steam_id[3:-1] if steam_id and '@' in steam_id else ctx.message.author.id if steam_id is None else None
-        steam_id = None if discord_id else steam_id
-
         update = update and update == 'update'
         force_update = update and ctx.message.author.id in DISCORD_ADMIN_USER_IDS
 
         if update:
             message = await ctx.send('Updating profile..')
 
-        logger.info('Received !value command with params steam_id {}, discord_id {}, update: {}, force_update: {}'.format(
-            steam_id, discord_id, update, force_update
+        logger.info('Received !value command with params steam_id {}, update: {}, force_update: {}'.format(
+            steam_id, update, force_update
         ))
 
         try:
-            api_response = SteamLadderAPI.get_profile(steam_id=steam_id, discord_id=discord_id, update=update, force_update=force_update)
+            api_response = SteamLadderAPI.get_profile(message=ctx.message, q=steam_id, update=update, force_update=force_update)
             base_embed = DiscordBotUtils.create_user_base_embed(api_response)
             rank_embed = DiscordBotUtils.create_value_embed(base_embed, api_response)
             await ctx.send(embed=rank_embed)
@@ -53,12 +50,12 @@ class SteamLadderCommands(commands.Cog):
         if update:
             message = await ctx.send('Updating profile..')
 
-        logger.info('Received !rank command with params steam_id {}, discord_id {}, update: {}, force_update: {}'.format(
-            steam_id, discord_id, update, force_update
+        logger.info('Received !rank command with params steam_id {}, update: {}, force_update: {}'.format(
+            steam_id, update, force_update
         ))
 
         try:
-            api_response = SteamLadderAPI.get_profile(steam_id=steam_id, discord_id=discord_id, update=update, force_update=force_update)
+            api_response = SteamLadderAPI.get_profile(message=ctx.message, q=steam_id, update=update, force_update=force_update)
             base_embed = DiscordBotUtils.create_user_base_embed(api_response)
             rank_embed = DiscordBotUtils.create_rank_embed(base_embed, api_response)
             await ctx.send(embed=rank_embed)
@@ -79,12 +76,12 @@ class SteamLadderCommands(commands.Cog):
         if update:
             message = await ctx.send('Updating profile..')
 
-        logger.info('Received !profile command with params steam_id {}, discord_id {}, update: {}, force_update: {}'.format(
-            steam_id, discord_id, update, force_update
+        logger.info('Received !profile command with params steam_id {}, update: {}, force_update: {}'.format(
+            steam_id, update, force_update
         ))
 
         try:
-            api_response = SteamLadderAPI.get_profile(steam_id=steam_id, discord_id=discord_id, update=update, force_update=force_update)
+            api_response = SteamLadderAPI.get_profile(message=ctx.message, q=steam_id, update=update, force_update=force_update)
             base_embed = DiscordBotUtils.create_user_base_embed(api_response)
             profile_embed = DiscordBotUtils.create_profile_embed(base_embed, api_response)
             await ctx.send(embed=profile_embed)
@@ -105,12 +102,12 @@ class SteamLadderCommands(commands.Cog):
         if update:
             message = await ctx.send('Updating profile..')
 
-        logger.info('Received !status command with params steam_id {}, discord_id {}, update: {}, force_update: {}'.format(
-            steam_id, discord_id, update, force_update
+        logger.info('Received !status command with params steam_id {}, update: {}, force_update: {}'.format(
+            steam_id, update, force_update
         ))
 
         try:
-            api_response = SteamLadderAPI.get_profile(steam_id=steam_id, discord_id=discord_id, update=update, force_update=force_update)
+            api_response = SteamLadderAPI.get_profile(message=ctx.message, q=steam_id, update=update, force_update=force_update)
             base_embed = DiscordBotUtils.create_user_base_embed(api_response)
             profile_embed = DiscordBotUtils.create_profile_status(base_embed, api_response)
             await ctx.send(embed=profile_embed)

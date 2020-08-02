@@ -2,6 +2,7 @@ import logging
 import requests
 
 from config import STEAMLADDER_API_TOKEN, STEAMLADDER_API_BASE_URL
+from utils import DiscordBotUtils
 
 logger = logging.getLogger(__name__)
 
@@ -18,9 +19,9 @@ class SteamLadderAPI:
     }
 
     @staticmethod
-    def get_profile(steam_id, discord_id, update, force_update=False):
-        q = discord_id if discord_id else steam_id
-        method = 'discord' if discord_id else 'profile' if steam_id.isnumeric() and len(steam_id) == 17 else 'steam'
+    def get_profile(message, q, update, force_update=False):
+        discord_id, steam_id, steam_custom_id, q = DiscordBotUtils.parse_query(message, q)
+        method = 'discord' if discord_id else 'profile' if steam_id else 'steam'
 
         if update:
             return SteamLadderAPI._post(version='v2', method='{}/{}'.format(method, q), params={'force': force_update})
