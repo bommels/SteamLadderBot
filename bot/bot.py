@@ -42,8 +42,6 @@ class SteamLadderCommands(commands.Cog):
     @commands.command()
     async def rank(self, ctx, steam_id=None, update=None):
         """View ranking stats of a user"""
-        discord_id = steam_id[3:-1] if steam_id and '@' in steam_id else ctx.message.author.id if steam_id is None else None
-        steam_id = None if discord_id else steam_id
         update = update and update == 'update'
         force_update = update and ctx.message.author.id in DISCORD_ADMIN_USER_IDS
 
@@ -68,8 +66,6 @@ class SteamLadderCommands(commands.Cog):
     @commands.command()
     async def profile(self, ctx, steam_id=None, update=None):
         """View a profile summary of a user"""
-        discord_id = steam_id[3:-1] if steam_id and '@' in steam_id else ctx.message.author.id if steam_id is None else None
-        steam_id = None if discord_id else steam_id
         update = update and update == 'update'
         force_update = update and ctx.message.author.id in DISCORD_ADMIN_USER_IDS
 
@@ -94,8 +90,6 @@ class SteamLadderCommands(commands.Cog):
     @commands.command()
     async def status(self, ctx, steam_id=None, update=None):
         """View profile status of a user"""
-        discord_id = steam_id[3:-1] if steam_id and '@' in steam_id else ctx.message.author.id if steam_id is None else None
-        steam_id = None if discord_id else steam_id
         update = update and update == 'update'
         force_update = update and ctx.message.author.id in DISCORD_ADMIN_USER_IDS
 

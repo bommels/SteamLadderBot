@@ -1,5 +1,8 @@
 import humanize
+import logging
 from discord import Embed, Color
+
+logger = logging.getLogger(__name__)
 
 
 class DiscordBotUtils:
@@ -7,17 +10,18 @@ class DiscordBotUtils:
     def parse_query(message, q):
         discord_id, steam_id, steam_custom_id = None, None, None
         if q:
-            if len(q) == 17 and q.isnumeric():
-                steam_id = True
-            elif '@' in q:
+            if '@' in q:
                 discord_id = True
                 q = q[3:-1]
+            elif len(q) == 17 and q.isnumeric():
+                steam_id = True
             else:
                 steam_custom_id = True
         else:
             discord_id = True
             q = message.author.id
 
+        logger.info('')
         return discord_id, steam_id, steam_custom_id, q
 
     @staticmethod
