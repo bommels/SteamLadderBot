@@ -80,15 +80,14 @@ class DiscordBotUtils:
             icon_url=api_response['steam']['avatar']['default']
         )
 
-        is_private_profile = api_response['steam']['is_private_profile']
         is_patreon = api_response['steamladder']['patreon']['active']
-
-        if is_private_profile:
-            embed.add_field(name='Profile status', value=':lock: Private', inline=is_patreon)
-
         if is_patreon:
             patreon_tier = api_response['steamladder']['patreon']['tier']
-            embed.add_field(name='Patron', value='{} **{} Supporter**'.format(EmojiConfig.get_patron_emoji(patreon_tier), patreon_tier), inline=is_private_profile)
+            embed.add_field(name='Patron', value='{} **{} Supporter**'.format(EmojiConfig.get_patron_emoji(patreon_tier), patreon_tier), inline=False)
+       
+        is_private_profile = api_response['steam']['is_private_profile']
+        if is_private_profile:
+            embed.add_field(name='Profile status', value=':lock: Private', inline=False)
 
         return embed
 
