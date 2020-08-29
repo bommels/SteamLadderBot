@@ -5,6 +5,24 @@ from discord import Embed, Color
 logger = logging.getLogger(__name__)
 
 
+class EmojiConfig:
+    SILVER_PATRON = (False, 'snailsilver', 553890706045796354)
+    GOLD_PATRON = (False, 'snailgold', 553890794453336099)
+    PLATINUM_PATRON = (True, 'snailplatinumsp', 555052389820923964)
+    DIAMOND_PATRON = (True, 'snaildiamondsp', 555052389606883351)
+    LEGENDARY_PATRON = (True, 'snaillegendarysp', 555052390261325845)
+
+    @staticmethod
+    def get_patron_emoji(tier):
+        try:
+            animated, name, id = getattr(EmojiConfig, '{}_PATRON'.format(tier.upper()))
+            return '<{}:{}:{}>'.format('a' if animated else '', name, id)
+        except:
+            pass
+
+        return ''
+
+
 class DiscordBotUtils:
     @staticmethod
     def parse_query(message, q):
@@ -62,7 +80,13 @@ class DiscordBotUtils:
             icon_url=api_response['steam']['avatar']['default']
         )
 
-        if api_response['steam']['is_private_profile']:
+        is_patreon = api_response['steamladder']['patreon']['active']
+        if is_patreon:
+            patreon_tier = api_response['steamladder']['patreon']['tier']
+            embed.add_field(name='Patron', value='{} **{} Supporter**'.format(EmojiConfig.get_patron_emoji(patreon_tier), patreon_tier), inline=False)
+       
+        is_private_profile = api_response['steam']['is_private_profile']
+        if is_private_profile:
             embed.add_field(name='Profile status', value=':lock: Private', inline=False)
 
         return embed
