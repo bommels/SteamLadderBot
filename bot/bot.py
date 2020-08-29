@@ -127,7 +127,7 @@ class MiscCommands(commands.Cog):
             servers = sorted(bot.guilds, key=lambda g: g.member_count, reverse=True)
             servers = ['{} | Members: {}'.format(server.name, server.member_count) for server in servers]
             servers_str = "\n".join(servers)
-            await ctx.send('I am in {} server(s)\n```{}```'.format(len(servers), servers_str))
+            await ctx.send('I am in {} servers!'.format(len(servers)))
 
     @commands.command()
     async def invite(self, ctx):
