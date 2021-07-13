@@ -2,7 +2,7 @@ name: Deploy on PRD
 on:
   push:
     branches:
-      - master
+      - temp
 
 jobs:
   deploy:
