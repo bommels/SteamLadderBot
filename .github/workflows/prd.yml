@@ -1,0 +1,21 @@
+name: Deploy on PRD
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.DO_SSH_KEY }}
+      - uses: appleboy/ssh-action@v0.1.4
+        with:
+          host: ${{ secrets.DO_SSH_IP }}
+          username: steamladder
+          key: ${{ secrets.DO_SSH_KEY }}
+          script: bash && cd SteamLadderBot && git pull origin master && docker-compose up -d --build
