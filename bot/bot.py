@@ -150,6 +150,12 @@ class MiscCommands(commands.Cog):
         logger.info('Received !join')
         await ctx.send('Join the Steam Ladder server: https://discord.gg/C4pdK7Z')
 
+    @commands.command()
+    async def privacy(self, ctx):
+        """Get the Privacy Policy URL"""
+        logger.info('Received !privacy')
+        await ctx.send('View our Privacy Policy: <https://steamladder.com/support/privacy>')
+
 
 @bot.event
 async def on_ready():
