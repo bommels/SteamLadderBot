@@ -1,6 +1,6 @@
 import logging
 
-from discord import Activity, ActivityType
+from discord import Activity, ActivityType, Intents
 from discord.ext import commands
 
 from config import DISCORD_COMMAND_PREFIX, DISCORD_ADMIN_USER_IDS, DISCORD_BOT_TOKEN
@@ -8,7 +8,10 @@ from api import SteamLadderAPI, APIException
 from utils import DiscordBotUtils
 
 logger = logging.getLogger(__name__)
-bot = commands.Bot(command_prefix=DISCORD_COMMAND_PREFIX)
+
+intents = Intents.default()
+# intents.message_content = True
+bot = commands.Bot(command_prefix=DISCORD_COMMAND_PREFIX, intents=intents)
 
 
 class SteamLadderCommands(commands.Cog):
@@ -151,11 +154,10 @@ class MiscCommands(commands.Cog):
 @bot.event
 async def on_ready():
     print('Logged on as {0}!'.format(bot.user))
-    await bot.change_presence(activity=Activity(name='SteamLadder | !sl help', type=ActivityType.watching))
+    await bot.add_cog(SteamLadderCommands())
+    await bot.add_cog(MiscCommands())
+    await bot.change_presence(activity=Activity(name='SteamLadder | /sl help', type=ActivityType.watching))
 
-
-bot.add_cog(SteamLadderCommands())
-bot.add_cog(MiscCommands())
 
 if __name__ == '__main__':
     logging.basicConfig(format='%(asctime)s [%(levelname)s] %(name)s: %(message)s', level=logging.INFO)
