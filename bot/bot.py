@@ -6,7 +6,7 @@ from config import DISCORD_ADMIN_USER_IDS, DISCORD_BOT_TOKEN
 import logging
 
 
-class steamLadderClient(discord.Client):
+class SteamLadderClient(discord.Client):
     def __init__(self) -> None:
         super().__init__(intents=discord.Intents.default())
         self.synced = False
@@ -18,7 +18,7 @@ class steamLadderClient(discord.Client):
             self.synced = True
 
 
-client = steamLadderClient()
+client = SteamLadderClient()
 tree = app_commands.CommandTree(client)
 group = app_commands.Group(name="sl", description="SteamLadder Group")
 
