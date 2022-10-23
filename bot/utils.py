@@ -25,7 +25,7 @@ class EmojiConfig:
 
 class DiscordBotUtils:
     @staticmethod
-    def parse_query(message, q):
+    def parse_query(author_id, q):
         discord_id, steam_id, steam_custom_id = None, None, None
         if q:
             if '@' in q:
@@ -37,7 +37,7 @@ class DiscordBotUtils:
                 steam_custom_id = True
         else:
             discord_id = True
-            q = message.author.id
+            q = author_id
 
         logger.info('')
         return discord_id, steam_id, steam_custom_id, q
@@ -84,7 +84,7 @@ class DiscordBotUtils:
         if is_patreon:
             patreon_tier = api_response['steamladder']['patreon']['tier']
             embed.add_field(name='Patron', value='{} **{} Supporter**'.format(EmojiConfig.get_patron_emoji(patreon_tier), patreon_tier), inline=False)
-       
+
         is_private_profile = api_response['steam']['is_private_profile']
         if is_private_profile:
             embed.add_field(name='Profile status', value=':lock: Private', inline=False)
