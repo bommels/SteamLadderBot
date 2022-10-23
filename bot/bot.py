@@ -32,7 +32,7 @@ async def self(interaction: discord.Interaction, steam_id: str, update: bool = F
     try:
         api_response = await SteamLadderAPI.get_profile(author_id=interaction.user.id, q=steam_id, update=update, force_update=force_update)
         base_embed = DiscordBotUtils.create_user_base_embed(api_response)
-        rank_embed = DiscordBotUtils.create_value_embed(base_embed, api_response)
+        rank_embed = DiscordBotUtils.create_rank_embed(base_embed, api_response)
         await interaction.followup.send(embed=rank_embed)
     except APIException as e:
         await interaction.followup.send(e)
@@ -47,8 +47,8 @@ async def self(interaction: discord.Interaction, steam_id: str, update: bool = F
     try:
         api_response = await SteamLadderAPI.get_profile(author_id=interaction.user.id, q=steam_id, update=update, force_update=force_update)
         base_embed = DiscordBotUtils.create_user_base_embed(api_response)
-        rank_embed = DiscordBotUtils.create_value_embed(base_embed, api_response)
-        await interaction.followup.send(embed=rank_embed)
+        value_embed = DiscordBotUtils.create_value_embed(base_embed, api_response)
+        await interaction.followup.send(embed=value_embed)
     except APIException as e:
         await interaction.followup.send(e)
 
