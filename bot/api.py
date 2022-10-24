@@ -19,8 +19,8 @@ class SteamLadderAPI:
     }
 
     @staticmethod
-    def get_profile(message, q, update, force_update=False):
-        discord_id, steam_id, steam_custom_id, q = DiscordBotUtils.parse_query(message, q)
+    async def get_profile(author_id, q, update, force_update=False):
+        discord_id, steam_id, steam_custom_id, q = DiscordBotUtils.parse_query(author_id, q)
         method = 'discord' if discord_id else 'profile' if steam_id else 'steam'
 
         if update:
